@@ -8,9 +8,13 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 
 <body>
+    <audio id="mySound" src="{{ asset('sound/noti.mp3') }}" preload="auto"></audio>
+
     <div class="background-container">
         <h1 class="font-bold text-7xl pb-10 text-slate-50">Turnos</h1>
         <div class="main-container">
@@ -53,6 +57,66 @@
         </div>
     </div>
     <script src="{{ asset('js/gestion.js') }}"></script>
+    <script>
+        var currentTurns = {
+            modulo1: "{{ $turns->modulo1 }}",
+            modulo2: "{{ $turns->modulo2 }}",
+            modulo3: "{{ $turns->modulo3 }}"
+        };
+        let turn1, turn2, turn3;
+
+        function fetchTurnos() {
+            $.ajax({
+                url: '{{ route('turnos.get') }}',
+                method: 'GET',
+                success: function(response) {
+                    turn1 = response.modulo1;
+                    turn2 = response.modulo2;
+                    turn3 = response.modulo3;
+
+                    $('#turno_modulo1').text(response.modulo1);
+                    $('#turno_modulo2').text(response.modulo2);
+                    $('#turno_modulo3').text(response.modulo3);
+
+                    var changes = false;
+
+                    if (turn1 !== currentTurns.modulo1) {
+                        $('#turno_modulo1').text(turn1);
+                        currentTurns.modulo1 = turn1;
+                        changes = true;
+                    }
+
+                    if (turn2 !== currentTurns.modulo2) {
+                        $('#turno_modulo2').text(turn2);
+                        currentTurns.modulo2 = turn2;
+                        changes = true;
+                    }
+
+                    if (turn3 !== currentTurns.modulo3) {
+                        $('#turno_modulo3').text(turn3);
+                        currentTurns.modulo3 = turn3;
+                        changes = true;
+                    }
+
+                    if (changes) {
+                        playAudio();
+                    }
+
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching turnos:', error);
+                }
+            });
+
+        }
+
+        function playAudio() {
+            var sound = document.getElementById("mySound");
+            sound.play();
+        }
+        // Fetch turnos every 5 seconds
+        setInterval(fetchTurnos, 5000);
+    </script>
     {{-- @livewirphpeScripts --}}
 </body>
 

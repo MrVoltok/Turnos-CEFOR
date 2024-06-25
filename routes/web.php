@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/gestion', [App\Http\Controllers\ModuleController::class, 'gestion'])->name('gestion');
 Route::post('/gestion/init-turnos', [App\Http\Controllers\ModuleController::class, 'initTurns'])->name('init-turnos');
 Route::post('/gestion/actualizar-turnos', [App\Http\Controllers\ModuleController::class, 'updateTurns'])->name('actualizar-turnos');
+Route::get('/turnos', [App\Http\Controllers\ModuleController::class, 'getTurns'])->name('turnos.get');
 
 Route::get('/home', function () {
     // Obtener el registro de módulos desde la base de datos

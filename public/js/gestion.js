@@ -8,11 +8,11 @@ function iniciarSlider() {
   }, 20000);
 }
 
-function refreshWindow() {
-  setInterval(() => {
-    location.reload();
-  }, 60000);
-}
+// function refreshWindow() {
+//   setInterval(() => {
+//     location.reload();
+//   }, 60000);
+// }
 
 iniciarSlider();
-refreshWindow(1);
+// refreshWindow(1);

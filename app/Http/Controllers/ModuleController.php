@@ -68,4 +68,10 @@ class ModuleController extends Controller
 
         return redirect()->back();
     }
+
+    public function getTurns()
+    {
+        $turns = Module::first();
+        return response()->json($turns);
+    }
 }
