@@ -11,13 +11,10 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-
+    
     server: {
-        host: '10.28.99.132',
+        host: '192.168.137.37',
         port: 8001,
-        cors: {
-            origin: '*'
-        }
     }
 
 });
