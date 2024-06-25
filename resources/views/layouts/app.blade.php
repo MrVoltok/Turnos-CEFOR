@@ -17,7 +17,7 @@
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased gestion-app">
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
         @include('layouts.navigation')
 
@@ -38,5 +38,13 @@
     </div>
     @livewireScripts
 </body>
+
+<style>
+    @media (prefers-color-scheme: light) {
+        .gestion-app {
+            background: #111827;
+        }
+    }
+</style>
 
 </html>

@@ -13,11 +13,8 @@ export default defineConfig({
     ],
 
     server: {
-        host: '10.28.99.132',
+        host: '192.168.137.81',
         port: 8001,
-        cors: {
-            origin: '*'
-        }
     }
 
 });
