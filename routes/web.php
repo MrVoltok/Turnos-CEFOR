@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('gestion');
 });
 
 Route::get('/dashboard', function () {
@@ -42,6 +42,6 @@ Route::get('/home', function () {
 
     // Pasar los datos a la vista 'home'
     return view('home', compact('turns'));
-});
+})->name('home');
 
 require __DIR__ . '/auth.php';

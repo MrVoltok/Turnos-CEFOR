@@ -58,6 +58,9 @@
     </div>
     <script src="{{ asset('js/gestion.js') }}"></script>
     <script>
+        const turnModule1 = document.getElementById("turno_modulo1");
+        const turnModule2 = document.getElementById("turno_modulo2");
+        const turnModule3 = document.getElementById("turno_modulo3");
         var currentTurns = {
             modulo1: "{{ $turns->modulo1 }}",
             modulo2: "{{ $turns->modulo2 }}",

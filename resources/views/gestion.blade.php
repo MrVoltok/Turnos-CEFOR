@@ -4,16 +4,21 @@
     <audio id="mySound" src="{{ asset('sound/noti.mp3') }}" preload="auto"></audio>
 
     <h1 class="font-bold  text-5xl">Gestión de Turnos</h1>
-    <form action="{{ route('init-turnos') }}" method="POST" id="configuracion">
-        @csrf
-        <div>
-            <label for="numeroInicial">Inicio:</label>
-            <input type="number" id="numero_inicial" name="numeroInicial" value="{{ $modules->global }}" required>
-        </div>
-        <button
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            onclick="iniciarTurnos()">Iniciar Turnos</button>
-    </form>
+    <section class="controls-init">
+        <form action="{{ route('init-turnos') }}" method="POST" id="configuracion">
+            @csrf
+            <div>
+                <label for="numeroInicial">Inicio:</label>
+                <input type="number" id="numero_inicial" name="numeroInicial" value="{{ $modules->global }}" required>
+            </div>
+            <button
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Iniciar
+                Turnos</button>
+        </form>
+        <a href="{{ route('home') }}" target="_blank" rel="noopener"
+            class="link-to-home focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Pantalla
+            de turnos</a>
+    </section>
     <section class="modules">
         <div id="modulo1" class="module">
             <h2 class="font-bold text-xl">Módulo 1</h2>
@@ -62,6 +67,19 @@
             color: #fff;
         }
 
+        .controls-init {
+            display: flex;
+            justify-content: center;
+            min-width: 250px;
+        }
+
+        .link-to-home {
+            height: fit-content;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         .modules {
             display: flex;
             justify-content: center;
@@ -74,6 +92,7 @@
             padding: 20px;
             margin: 10px 0;
             width: 80%;
+            min-width: 250px;
             max-width: 600px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -154,5 +173,81 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
+        @media (max-width: 768px) {
+            .controls-init {
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .controls-init form {
+                flex-direction: column;
+                justify-content: start;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .controls-init form button {
+                min-width: 250px;
+                max-width: 300px;
+            }
+
+            .link-to-home {
+                min-width: 250px;
+                max-width: 300px;
+            }
+        }
     </style>
+
+    <script>
+        var currentTurns = {
+            modulo1: "{{ $modules->modulo1 }}",
+            modulo2: "{{ $modules->modulo2 }}",
+            modulo3: "{{ $modules->modulo3 }}"
+        };
+        let turn1, turn2, turn3;
+
+        function fetchTurnosGestion() {
+            $.ajax({
+                url: '{{ route('turnos.get') }}',
+                method: 'GET',
+                success: function(response) {
+                    turn1 = response.modulo1;
+                    turn2 = response.modulo2;
+                    turn3 = response.modulo3;
+
+                    var changes = false;
+
+                    if (turn1 !== currentTurns.modulo1) {
+                        $('#turno_modulo1').text(turn1);
+                        currentTurns.modulo1 = turn1;
+                        changes = true;
+                    }
+
+                    if (turn2 !== currentTurns.modulo2) {
+                        $('#turno_modulo2').text(turn2);
+                        currentTurns.modulo2 = turn2;
+                        changes = true;
+                    }
+
+                    if (turn3 !== currentTurns.modulo3) {
+                        $('#turno_modulo3').text(turn3);
+                        currentTurns.modulo3 = turn3;
+                        changes = true;
+                    }
+
+                    if (changes) {
+                        location.reload();
+                    }
+
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching turnos:', error);
+                }
+            });
+
+        }
+        setInterval(fetchTurnosGestion, 5000);
+    </script>
 @endsection
