@@ -28,12 +28,14 @@ class ModuleController extends Controller
         $module1 = 0;
         $module2 = 0;
         $module3 = 0;
+        $module4 = 0;
 
         $turns = Module::first();
         $turns->global = $global;
         $turns->modulo1 = $module1;
         $turns->modulo2 = $module2;
         $turns->modulo3 = $module3;
+        $turns->modulo4 = $module4;
 
         $turns->save();
 
@@ -46,7 +48,7 @@ class ModuleController extends Controller
         $global = $request->global + 1;
 
         $modulo = $request->modulo;
-        $modulos = ['modulo1', 'modulo2', 'modulo3'];
+        $modulos = ['modulo1', 'modulo2', 'modulo3', 'modulo4'];
 
         // Validar que el módulo enviado es uno de los esperados (modulo1, modulo2, modulo3)
         if (!in_array($modulo, $modulos)) {

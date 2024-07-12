@@ -46,13 +46,24 @@
                         <h2 class="text-5xl text-slate-50">Módulo 3</h2>
                     </div>
                 </div>
+                <div id="modulo4">
+                    <div class="turno">
+                        <h2 class="text-black font-bold text-2xl">Turno</h2>
+                        <span class="text-black font-bold text-5xl" id="turno_modulo4">{{ $turns->modulo4 }}</span>
+                    </div>
+                    <div class="modulo">
+                        <h2 class="text-5xl text-slate-50">Módulo 4</h2>
+                    </div>
+                </div>
             </div>
 
             <div id="slider">
                 <img src="{{ asset('img/LobosBUAP.png') }}" id="img1">
-                <img src="{{ asset('img/padel.jpg') }}" id="img2" class="hidden">
-                <img src="{{ asset('img/ajedrez.jpg') }}" id="img3" class="hidden">
-                <img src="{{ asset('img/campamento.jpg') }}" id="img4" class="hidden">
+                <img src="{{ asset('img/curso1.jpeg') }}" id="img2" class="hidden">
+                <img src="{{ asset('img/curso2.jpeg') }}" id="img3" class="hidden">
+                <img src="{{ asset('img/curso3.jpeg') }}" id="img4" class="hidden">
+                <img src="{{ asset('img/curso4.jpeg') }}" id="img5" class="hidden">
+                <img src="{{ asset('img/campamento.jpg') }}" id="img6" class="hidden">
             </div>
         </div>
     </div>
@@ -61,12 +72,14 @@
         const turnModule1 = document.getElementById("turno_modulo1");
         const turnModule2 = document.getElementById("turno_modulo2");
         const turnModule3 = document.getElementById("turno_modulo3");
+        const turnModule4 = document.getElementById("turno_modulo4");
         var currentTurns = {
             modulo1: "{{ $turns->modulo1 }}",
             modulo2: "{{ $turns->modulo2 }}",
-            modulo3: "{{ $turns->modulo3 }}"
+            modulo3: "{{ $turns->modulo3 }}",
+            modulo4: "{{ $turns->modulo4 }}"
         };
-        let turn1, turn2, turn3;
+        let turn1, turn2, turn3, turn4;
 
         function fetchTurnos() {
             $.ajax({
@@ -76,10 +89,12 @@
                     turn1 = response.modulo1;
                     turn2 = response.modulo2;
                     turn3 = response.modulo3;
+                    turn4 = response.modulo4;
 
                     $('#turno_modulo1').text(response.modulo1);
                     $('#turno_modulo2').text(response.modulo2);
                     $('#turno_modulo3').text(response.modulo3);
+                    $('#turno_modulo4').text(response.modulo4);
 
                     var changes = false;
 
@@ -98,6 +113,12 @@
                     if (turn3 !== currentTurns.modulo3) {
                         $('#turno_modulo3').text(turn3);
                         currentTurns.modulo3 = turn3;
+                        changes = true;
+                    }
+
+                    if (turn4 !== currentTurns.modulo4) {
+                        $('#turno_modulo4').text(turn4);
+                        currentTurns.modulo4 = turn4;
                         changes = true;
                     }
 

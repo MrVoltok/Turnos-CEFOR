@@ -12,10 +12,10 @@ export default defineConfig({
         }),
     ],
 
-    server: {
-        host: '192.168.1.186',
-        port: 8000,
-    }
+    // server: {
+    //     host: '192.168.1.186',
+    //     port: 8000,
+    // }
 
 });
 

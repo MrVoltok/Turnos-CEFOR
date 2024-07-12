@@ -66,7 +66,8 @@ h1 {
 
 #modulo1,
 #modulo2,
-#modulo3 {
+#modulo3,
+#modulo4 {
   background: rgba(0, 0, 0, 0.6);
   border-radius: 10px;
   text-align: center;

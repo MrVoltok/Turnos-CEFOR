@@ -53,6 +53,17 @@
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 next">Siguiente</button>
             </form>
         </div>
+        <div id="modulo3" class="module">
+            <h2 class="font-bold text-xl">Módulo 4</h2>
+            <p>Atendiendo Turno: <span id="turno_modulo4" class="font-bold">{{ $modules->modulo4 }}</span></p>
+            <form action="{{ route('actualizar-turnos') }}" method="POST">
+                @csrf
+                <input type="hidden" name="global" value="{{ $modules->global }}">
+                <input type="hidden" name="modulo" value="modulo4">
+                <button
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 next">Siguiente</button>
+            </form>
+        </div>
     </section>
     {{-- <div class="button-container">
         <button class="success font-bold" onclick="anunciarTurno()">Anunciar Turno</button>
@@ -202,11 +213,10 @@
 
     <script>
         var currentTurns = {
-            modulo1: "{{ $modules->modulo1 }}",
-            modulo2: "{{ $modules->modulo2 }}",
-            modulo3: "{{ $modules->modulo3 }}"
+            modulo1: parseInt($('#turno_modulo1').text()),
+            modulo2: parseInt($('#turno_modulo2').text()),
+            modulo3: parseInt($('#turno_modulo3').text())
         };
-        let turn1, turn2, turn3;
 
         function fetchTurnosGestion() {
             $.ajax({
@@ -216,6 +226,8 @@
                     turn1 = response.modulo1;
                     turn2 = response.modulo2;
                     turn3 = response.modulo3;
+
+                    console.log(turn1, turn2, turn3);
 
                     var changes = false;
 
@@ -246,8 +258,8 @@
                     console.error('Error fetching turnos:', error);
                 }
             });
-
         }
+
         setInterval(fetchTurnosGestion, 5000);
     </script>
 @endsection
