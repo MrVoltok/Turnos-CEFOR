@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <audio id="mySound" src="{{ asset('sound/noti.mp3') }}" preload="auto"></audio>
+    {{-- <audio id="mySound" src="{{ asset('sound/noti.mp3') }}" preload="auto"></audio> --}}
 
     <div class="background-container">
         <h1 class="font-bold text-7xl pb-10 text-slate-50">Turnos</h1>
