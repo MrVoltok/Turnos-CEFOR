@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\AppController;
 use App\Models\Module;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,9 +22,7 @@ Route::get('/', function () {
     return redirect()->route('gestion');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::get('/dashboard', [AppController::class, 'dashboard'])->name('dashboard');
 // ->middleware(['auth', 'verified'])
 
 Route::middleware('auth')->group(function () {
@@ -43,5 +43,9 @@ Route::get('/home', function () {
     // Pasar los datos a la vista 'home'
     return view('home', compact('turns'));
 })->name('home');
+
+Route::post('/dashboard/avisos/nuevo', [App\Http\Controllers\MessageController::class, 'store'])->name('message.add');
+Route::put('/dashboard/avisos/nuevo/{message}', [App\Http\Controllers\MessageController::class, 'update'])->name('message.update');
+Route::delete('/dashboard/avisos/nuevo/{message}', [App\Http\Controllers\MessageController::class, 'delete'])->name('message.delete');
 
 require __DIR__ . '/auth.php';
