@@ -176,48 +176,33 @@
                     <header class="flex justify-between">
                         <h3 class="font-bold text-3xl">Videos</h3>
                         <div class="buttons">
-                            <button type="button"
+                            <button type="button" id="add-video"
                                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Agregar</button>
                         </div>
                     </header>
                     <article class="pt-3">
-                        <ul class="flex justify-between gap-2 overflow-x-scroll">
-                            <li class="flex flex-col items-center gap-2 shadow-xl p-2 bg-gray-900 rounded">
-                                <div class="image w-[300px] h-full rounded overflow-hidden shadow-xl relative">
-                                    <video controls src="{{ asset('video/video.mp4') }}"></video>
-                                    <button type="button"
-                                        class="absolute right-0 top-0 focus:outline-none text-white bg-red-500 hover:bg-red-600 focus:ring-4  font-medium rounded text-sm px-3 py-1.5 focus:ring-red-900">
-                                        <i class='bx bxs-trash'></i>
-                                    </button>
-                                </div>
-                            </li>
-                            <li class="flex flex-col items-center gap-2 shadow-xl p-2 bg-gray-900 rounded">
-                                <div class="image w-[300px] h-full rounded overflow-hidden shadow-xl relative">
-                                    <video controls src="{{ asset('video/video.mp4') }}"></video>
-                                    <button type="button"
-                                        class="absolute right-0 top-0 focus:outline-none text-white bg-red-500 hover:bg-red-600 focus:ring-4  font-medium rounded text-sm px-3 py-1.5 focus:ring-red-900">
-                                        <i class='bx bxs-trash'></i>
-                                    </button>
-                                </div>
-                            </li>
-                            <li class="flex flex-col items-center gap-2 shadow-xl p-2 bg-gray-900 rounded">
-                                <div class="image w-[300px] h-full rounded overflow-hidden shadow-xl relative">
-                                    <video controls src="{{ asset('video/video.mp4') }}"></video>
-                                    <button type="button"
-                                        class="absolute right-0 top-0 focus:outline-none text-white bg-red-500 hover:bg-red-600 focus:ring-4  font-medium rounded text-sm px-3 py-1.5 focus:ring-red-900">
-                                        <i class='bx bxs-trash'></i>
-                                    </button>
-                                </div>
-                            </li>
-                            <li class="flex flex-col items-center gap-2 shadow-xl p-2 bg-gray-900 rounded">
-                                <div class="image w-[300px] h-full rounded overflow-hidden shadow-xl relative">
-                                    <video controls src="{{ asset('video/video.mp4') }}"></video>
-                                    <button type="button"
-                                        class="absolute right-0 top-0 focus:outline-none text-white bg-red-500 hover:bg-red-600 focus:ring-4  font-medium rounded text-sm px-3 py-1.5 focus:ring-red-900">
-                                        <i class='bx bxs-trash'></i>
-                                    </button>
-                                </div>
-                            </li>
+                        <ul class="flex gap-2 overflow-x-scroll">
+                            @forelse ($videos as $video)
+                                <li class="flex flex-col items-center gap-2 shadow-xl p-2 bg-gray-900 rounded">
+                                    <div class="image w-[300px] h-full rounded overflow-hidden shadow-xl relative">
+                                        <video controls src="{{ Storage::url($video->name) }}"></video>
+                                        <div class="button absolute top-0 right-0">
+                                            <form action="{{ route('video.delete', $video->id) }}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    class="focus:outline-none text-white bg-red-500 hover:bg-red-600 focus:ring-4  font-medium rounded text-sm px-3 py-1.5 focus:ring-red-900">
+                                                    <i class='bx bxs-trash'></i>
+                                                </button>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </li>
+                            @empty
+                                <span class="text-gray-100 font-bold text-xl">No hay videos almacenados en el
+                                    sistema.</span>
+                            @endforelse
                         </ul>
                     </article>
                 </div>
@@ -302,8 +287,24 @@
                     </div>
                     <div class="button flex justify-center">
                         <button type="submit"
-                            class="modal-submit mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Agregar
+                            class="modal-submit mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Subir
                             Imagen</button>
+                    </div>
+                </form>
+
+                <form action="{{ route('video.add') }}" method="POST" class="pt-3" id="form-add-video"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div class="video">
+                        <label for="video" class="block mb-2 text-sm font-medium text-white-100">Video</label>
+                        <input type="file" id="video-input" name="video"
+                            class="block w-full p-2.5 text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Seleccione un video" required />
+                    </div>
+                    <div class="button flex justify-center">
+                        <button type="submit"
+                            class="modal-submit mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Subir
+                            Video</button>
                     </div>
                 </form>
             </div>
@@ -334,13 +335,15 @@
 
         #form-add-message,
         #form-edit-message,
-        #form-add-image {
+        #form-add-image,
+        #form-add-video {
             display: none;
         }
 
         #form-add-message.active,
         #form-edit-message.active,
-        #form-add-image.active {
+        #form-add-image.active,
+        #form-add-video.active {
             display: block;
         }
     </style>
@@ -361,7 +364,8 @@
         const addImageBtn = document.querySelector('#add-image');
         const formAddImage = document.querySelector('#form-add-image');
 
-
+        const addVideoBtn = document.querySelector('#add-video');
+        const formAddVideo = document.querySelector('#form-add-video');
 
         let modalFor;
 
@@ -389,8 +393,14 @@
         });
 
         addImageBtn.addEventListener('click', () => {
-            modalTitle.textContent = "Agregar Aviso"
+            modalTitle.textContent = "Agregar Imagen"
             formAddImage.classList.toggle('active');
+            modal.classList.toggle('active');
+        })
+
+        addVideoBtn.addEventListener('click', () => {
+            modalTitle.textContent = "Agregar Video"
+            formAddVideo.classList.toggle('active');
             modal.classList.toggle('active');
         })
 

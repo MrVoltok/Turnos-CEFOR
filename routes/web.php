@@ -45,12 +45,16 @@ Route::get('/home', function () {
     return view('home', compact('turns'));
 })->name('home');
 
-Route::post('/dashboard/avisos/nuevo', [App\Http\Controllers\MessageController::class, 'store'])->name('message.add');
-Route::put('/dashboard/avisos/nuevo/{message}', [App\Http\Controllers\MessageController::class, 'update'])->name('message.update');
-Route::delete('/dashboard/avisos/nuevo/{message}', [App\Http\Controllers\MessageController::class, 'delete'])->name('message.delete');
+Route::post('/dashboard/avisos/nuevo', [MessageController::class, 'store'])->name('message.add');
+Route::put('/dashboard/avisos/nuevo/{message}', [MessageController::class, 'update'])->name('message.update');
+Route::delete('/dashboard/avisos/nuevo/{message}', [MessageController::class, 'delete'])->name('message.delete');
 
-Route::post('/dashboard/imagen/nuevo', [App\Http\Controllers\MediaController::class, 'storeImage'])->name('image.add');
-Route::delete('/dashboard/imagen/{image}', [App\Http\Controllers\MediaController::class, 'deleteImage'])->name('image.delete');
+// ROUTES FOR MEDIA
+Route::post('/dashboard/imagen/nuevo', [MediaController::class, 'storeImage'])->name('image.add');
+Route::delete('/dashboard/imagen/{image}', [MediaController::class, 'deleteImage'])->name('image.delete');
+Route::post('/dashboard/video/nuevo', [MediaController::class, 'storeVideo'])->name('video.add');
+Route::delete('/dashboard/video/{video}', [MediaController::class, 'deleteVideo'])->name('video.delete');
+
 
 
 require __DIR__ . '/auth.php';

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Image;
+use App\Models\Video;
 use Illuminate\Support\Facades\Storage;
 
 class MediaController extends Controller
@@ -25,6 +26,23 @@ class MediaController extends Controller
         return redirect()->back();
     }
 
+    public function storeVideo(Request $request)
+    {
+
+        $video = '';
+
+        if ($request->hasFile('video')) {
+            $path = $request->file('video')->store('videos', 'public');
+            $video = $path;
+        }
+
+        Video::create([
+            'name' => $video,
+        ]);
+
+        return redirect()->back();
+    }
+
     public function deleteImage($id)
     {
 
@@ -36,6 +54,22 @@ class MediaController extends Controller
             }
 
             Image::destroy($id);
+        }
+
+        return redirect()->back();
+    }
+
+    public function deleteVideo($id)
+    {
+
+        $video = Video::find($id);
+
+        if ($video) {
+            if (Storage::disk('public')->exists($video->name)) {
+                Storage::disk('public')->delete($video->name);
+            }
+
+            Video::destroy($id);
         }
 
         return redirect()->back();
