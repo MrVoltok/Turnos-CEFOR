@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\AppController;
 use App\Models\Module;
 use Illuminate\Http\Request;
@@ -47,5 +48,9 @@ Route::get('/home', function () {
 Route::post('/dashboard/avisos/nuevo', [App\Http\Controllers\MessageController::class, 'store'])->name('message.add');
 Route::put('/dashboard/avisos/nuevo/{message}', [App\Http\Controllers\MessageController::class, 'update'])->name('message.update');
 Route::delete('/dashboard/avisos/nuevo/{message}', [App\Http\Controllers\MessageController::class, 'delete'])->name('message.delete');
+
+Route::post('/dashboard/imagen/nuevo', [App\Http\Controllers\MediaController::class, 'storeImage'])->name('image.add');
+Route::delete('/dashboard/imagen/{image}', [App\Http\Controllers\MediaController::class, 'deleteImage'])->name('image.delete');
+
 
 require __DIR__ . '/auth.php';

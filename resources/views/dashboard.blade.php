@@ -140,48 +140,34 @@
                     <header class="flex justify-between">
                         <h3 class="font-bold text-3xl">Imágenes</h3>
                         <div class="buttons">
-                            <button type="button"
+                            <button type="button" id="add-image"
                                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Agregar</button>
                         </div>
                     </header>
                     <article class="pt-3">
-                        <ul class="flex justify-between gap-2 overflow-x-scroll">
-                            <li class="flex flex-col items-center gap-2 shadow-xl p-2 bg-gray-900 rounded">
-                                <div class="image w-[220px] h-[220px] rounded overflow-hidden shadow-xl relative">
-                                    <picture>
-                                        <img src="{{ asset('img/campamento.jpg') }}" alt="Imágenes"
-                                            class="w-full h-full">
-                                    </picture>
-                                    <button type="button"
-                                        class="absolute right-0 top-0 focus:outline-none text-white bg-red-500 hover:bg-red-600 focus:ring-4  font-medium rounded text-sm px-3 py-1.5 focus:ring-red-900">
-                                        <i class='bx bxs-trash'></i>
-                                    </button>
-                                </div>
-                            </li>
-                            <li class="flex flex-col items-center gap-2 shadow-xl p-2 bg-gray-900 rounded">
-                                <div class="image w-[220px] h-[220px] rounded overflow-hidden shadow-xl">
-                                    <picture>
-                                        <img src="{{ asset('img/curso1.jpeg') }}" alt="Imágenes"
-                                            class="w-full h-full">
-                                    </picture>
-                                </div>
-                            </li>
-                            <li class="flex flex-col items-center gap-2 shadow-xl p-2 bg-gray-900 rounded">
-                                <div class="image w-[220px] h-[220px] rounded overflow-hidden shadow-xl">
-                                    <picture>
-                                        <img src="{{ asset('img/curso4.jpeg') }}" alt="Imágenes"
-                                            class="w-full h-full">
-                                    </picture>
-                                </div>
-                            </li>
-                            <li class="flex flex-col items-center gap-2 shadow-xl p-2 bg-gray-900 rounded">
-                                <div class="image w-[220px] h-[220px] rounded overflow-hidden shadow-xl">
-                                    <picture>
-                                        <img src="{{ asset('img/LobosBUAP.png') }}" alt="Imágenes"
-                                            class="w-full h-full">
-                                    </picture>
-                                </div>
-                            </li>
+                        <ul class="flex gap-2 overflow-x-scroll">
+                            @forelse ($images as $image)
+                                <li class="flex flex-col items-center gap-2 shadow-xl p-2 bg-gray-900 rounded">
+                                    <div class="image w-[220px] h-[220px] rounded overflow-hidden shadow-xl relative">
+                                        <picture>
+                                            <img src="{{ Storage::url($image->name) }}" alt="Imágenes"
+                                                class="w-full h-full">
+                                        </picture>
+                                        <form action="{{ route('image.delete', $image->id) }}" method="POST"
+                                            class="absolute right-0 top-0">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="focus:outline-none text-white bg-red-500 hover:bg-red-600 focus:ring-4  font-medium rounded text-sm px-3 py-1.5 focus:ring-red-900">
+                                                <i class='bx bxs-trash'></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </li>
+                            @empty
+                                <span class="text-gray-100 font-bold text-xl">No hay imágenes almacenadas en el
+                                    sistema.</span>
+                            @endforelse
                         </ul>
                     </article>
                 </div>
@@ -279,9 +265,11 @@
                             class="block w-full p-2.5 text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Ingrese un nuevo aviso" required />
                     </div>
-                    <button type="submit"
-                        class="modal-submit mt-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Agregar
-                        Aviso</button>
+                    <div class="button flex justify-center">
+                        <button type="submit"
+                            class="modal-submit mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Agregar
+                            Aviso</button>
+                    </div>
                 </form>
 
                 <form action="{{ route('message.update', ['message' => $message->id]) }}" method="POST"
@@ -295,9 +283,28 @@
                             placeholder="Ingrese un nuevo aviso" required />
                         <input type="hidden" name="id" id="message-id-input">
                     </div>
-                    <button type="submit"
-                        class="modal-submit mt-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Actualizar
-                        Aviso</button>
+                    <div class="button flex justify-center">
+                        <button type="submit"
+                            class="modal-submit mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Actualizar
+                            Aviso</button>
+                    </div>
+                </form>
+
+                {{-- MEDIA FORMS --}}
+                <form action="{{ route('image.add') }}" method="POST" class="pt-3" id="form-add-image"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div class="image">
+                        <label for="image" class="block mb-2 text-sm font-medium text-white-100">Imagen</label>
+                        <input type="file" id="image-input" name="image"
+                            class="block w-full p-2.5 text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Seleccione una imagen" required />
+                    </div>
+                    <div class="button flex justify-center">
+                        <button type="submit"
+                            class="modal-submit mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Agregar
+                            Imagen</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -326,19 +333,23 @@
         }
 
         #form-add-message,
-        #form-edit-message {
+        #form-edit-message,
+        #form-add-image {
             display: none;
         }
 
         #form-add-message.active,
-        #form-edit-message.active {
+        #form-edit-message.active,
+        #form-add-image.active {
             display: block;
         }
     </style>
 
     <script>
         const closeModal = document.querySelector('.close-modal');
+        const modalTitle = document.querySelector('#modal-title');
         const modal = document.querySelector('.modal');
+        const modalSubmit = document.querySelector('.modal-submit');
 
         const messageBtn = document.querySelector('.add-message');
         const formAddMessage = document.querySelector('#form-add-message');
@@ -346,8 +357,10 @@
         const formEditMessage = document.querySelector('#form-edit-message');
         const messageInput = document.querySelector('#message-input');
         const messageIdInput = document.querySelector('#message-id-input');
-        const modalTitle = document.querySelector('#modal-title');
-        const modalSubmit = document.querySelector('.modal-submit');
+
+        const addImageBtn = document.querySelector('#add-image');
+        const formAddImage = document.querySelector('#form-add-image');
+
 
 
         let modalFor;
@@ -375,6 +388,12 @@
             })
         });
 
+        addImageBtn.addEventListener('click', () => {
+            modalTitle.textContent = "Agregar Aviso"
+            formAddImage.classList.toggle('active');
+            modal.classList.toggle('active');
+        })
+
         closeModal.addEventListener('click', () => {
             modal.classList.remove('active');
             closeForms();
@@ -383,6 +402,7 @@
         function closeForms() {
             formAddMessage.classList.remove('active');
             formEditMessage.classList.remove('active');
+            formAddImage.classList.remove('active');
         }
     </script>
 </x-app-layout>
