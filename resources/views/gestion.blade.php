@@ -20,7 +20,7 @@
             de turnos</a>
     </section>
     <section class="modules">
-        <div id="modulo1" class="module">
+        {{-- <div id="modulo1" class="module">
             <h2 class="font-bold text-xl">Módulo 1</h2>
             <p>Atendiendo Turno: <span id="turno_modulo1" class="font-bold">{{ $modules->modulo1 }}</span></p>
             <form action="{{ route('actualizar-turnos') }}" method="POST">
@@ -63,7 +63,25 @@
                 <button
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 next">Siguiente</button>
             </form>
-        </div>
+        </div> --}}
+        @foreach (['modulo1' => $modules->modulo1, 'modulo2' => $modules->modulo2, 'modulo3' => $modules->modulo3, 'modulo4' => $modules->modulo4] as $moduloKey => $moduloValue)
+            @if (!in_array($moduloKey, $disabledModules))
+                <div id="{{ $moduloKey }}" class="module">
+                    <h2 class="font-bold text-xl">{{ ucfirst(str_replace('modulo', 'Módulo ', $moduloKey)) }}</h2>
+                    <p>Atendiendo Turno: <span id="turno_{{ $moduloKey }}" class="font-bold">{{ $moduloValue }}</span>
+                    </p>
+                    <form action="{{ route('actualizar-turnos') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="modulo" value="{{ $moduloKey }}">
+                        <input type="hidden" name="global" value="{{ $modules->global }}">
+                        <button
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 next">
+                            Siguiente
+                        </button>
+                    </form>
+                </div>
+            @endif
+        @endforeach
     </section>
     {{-- <div class="button-container">
         <button class="success font-bold" onclick="anunciarTurno()">Anunciar Turno</button>

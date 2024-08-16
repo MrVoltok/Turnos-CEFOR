@@ -13,6 +13,7 @@ class Module extends Model
         'modulo1',
         'modulo2',
         'modulo3',
-        'global'
+        'global',
+        'restrict'
     ];
 }

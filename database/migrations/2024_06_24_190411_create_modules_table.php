@@ -16,6 +16,7 @@ return new class extends Migration
             $table->tinyInteger('modulo1');
             $table->tinyInteger('modulo2');
             $table->tinyInteger('modulo3');
+            $table->tinyInteger('modulo4');
             $table->tinyInteger('global');
             $table->timestamps();
         });

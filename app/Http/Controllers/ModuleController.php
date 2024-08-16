@@ -13,8 +13,11 @@ class ModuleController extends Controller
     public function gestion()
     {
         $modules = Module::first();
+        $dataRestrict = $modules->restrict;
 
-        return view('gestion', ['modules' => $modules]);
+        $disabledModules = json_decode($dataRestrict, true);
+
+        return view('gestion', ['modules' => $modules, 'disabledModules' => $disabledModules]);
     }
 
     public function initTurns(Request $request)
@@ -75,5 +78,21 @@ class ModuleController extends Controller
     {
         $turns = Module::first();
         return response()->json($turns);
+    }
+
+    public function restrictModules(Request $request)
+    {
+        $data = $request->all();
+
+        $restricted = array_keys(array_filter($data, function ($value, $key) {
+            return $value === 'off' && strpos($key, 'modulo') === 0;
+        }, ARRAY_FILTER_USE_BOTH));
+
+        $moduleTable = Module::first();
+        $moduleTable->restrict = $restricted;
+
+        $moduleTable->save();
+
+        return redirect()->back();
     }
 }

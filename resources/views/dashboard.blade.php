@@ -14,42 +14,48 @@
                         <div class="buttons">
                             <a type="button"
                                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Info</a>
-                            <button type="button"
+                            <button type="button" id="check-modules-btn"
                                 class="focus:outline-none text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:ring-yellow-900">Editar</button>
                         </div>
                     </header>
                     <article class="pt-2">
                         <ul class="flex flex-col gap-2">
-                            <li class="flex items-center gap-1">
-                                <i class='bx bxs-circle text-sm text-green-600'></i>
-                                <div class="module-info flex gap-4 items-end">
-                                    <span class="text-xl font-bold">Módulo 1</span>
-                                    <p>Atendiendo al turno: 1</p>
-                                </div>
-                            </li>
-                            <li class="flex items-center gap-1">
-                                <i class='bx bxs-circle text-sm text-green-600'></i>
-                                <div class="module-info flex gap-4 items-end">
-                                    <span class="text-xl font-bold">Módulo 2</span>
-                                    <p>Atendiendo al turno: 3</p>
-                                </div>
-                            </li>
-                            <li class="flex items-center gap-1">
-                                <i class='bx bxs-circle text-sm text-green-600'></i>
-                                <div class="module-info flex gap-4 items-end">
-                                    <span class="text-xl font-bold">Módulo 3</span>
-                                    <p>Atendiendo al turno: 4</p>
-                                </div>
-                            </li>
-                            <li class="flex items-center gap-1">
-                                <i class='bx bxs-circle text-sm text-red-600'></i>
-                                <div class="module-info flex gap-4 items-end">
-                                    <span class="text-xl font-bold">Módulo 4</span>
-                                    <p></p>
-                                </div>
-                            </li>
+                            @php
+                                $modulesArray = [
+                                    'modulo1' => $modules->modulo1,
+                                    'modulo2' => $modules->modulo2,
+                                    'modulo3' => $modules->modulo3,
+                                    'modulo4' => $modules->modulo4,
+                                ];
+
+                                $dataRestrict = $modules->restrict;
+
+                                $arrayRestrict = json_decode($dataRestrict, true);
+
+                            @endphp
+
+                            @foreach ($modulesArray as $moduleKey => $moduleValue)
+                                <li class="flex items-center gap-3">
+                                    @if (in_array($moduleKey, $arrayRestrict))
+                                        <i class='bx bxs-circle text-sm text-red-600'></i>
+                                    @else
+                                        <i class='bx bxs-circle text-sm text-green-600'></i>
+                                    @endif
+                                    <div class="module-info flex gap-4 items-end">
+                                        <span class="text-xl font-bold">Módulo {{ $loop->iteration }}</span>
+                                        @if (!in_array($moduleKey, $arrayRestrict))
+                                            <p>Atendiendo al turno: {{ $moduleValue }}</p>
+                                        @endif
+                                    </div>
+                                </li>
+                            @endforeach
                         </ul>
                     </article>
+                    {{-- <footer class="mt-3 flex justify-center">
+                        <button type="button" id="accept-modules"
+                            class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none focus:ring-green-800">Aplicar
+                            cambios</button>
+                    </footer> --}}
                 </section>
 
                 <section class="bg-gray-800 p-6 shadow-sm sm:rounded-lg brands messages">
@@ -241,6 +247,57 @@
                     </div>
                 </header>
 
+                {{-- MODULES --}}
+                <form action="{{ route('modules.restrict') }}" method="POST" class="pt-3"
+                    id="form-check-modules">
+                    @csrf
+                    <ul>
+                        <li>
+                            <div class="flex items-center mb-4">
+                                <input type="hidden" name="modulo1" value="off">
+                                <input id="default-checkbox" type="checkbox" name="modulo1" value="on" checked
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="module1" class="ms-2  font-medium text-lg text-gray-300">Modulo
+                                    1</label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center mb-4">
+                                <input type="hidden" name="modulo2" value="off">
+                                <input id="default-checkbox" type="checkbox" name="modulo2" value="on"
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="module2" class="ms-2  font-medium text-lg text-gray-300">Modulo
+                                    2</label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center mb-4">
+                                <input type="hidden" name="modulo3" value="off">
+                                <input id="default-checkbox" type="checkbox" name="modulo3" value="on"
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="module3" class="ms-2  font-medium text-lg text-gray-300">Modulo
+                                    3</label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center mb-4">
+                                <input type="hidden" name="modulo4" value="off">
+                                <input id="default-checkbox" type="checkbox" name="modulo4" value="on"
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="module4" class="ms-2  font-medium text-lg text-gray-300">Modulo
+                                    4</label>
+                            </div>
+                        </li>
+
+
+                    </ul>
+                    <div class="button flex justify-center">
+                        <button type="submit"
+                            class="modal-submit mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Aplicar
+                            Cambios</button>
+                    </div>
+                </form>
+
                 {{-- MESSAGES FORMS --}}
                 <form action="{{ route('message.add') }}" method="POST" class="pt-3" id="form-add-message">
                     @csrf
@@ -257,8 +314,7 @@
                     </div>
                 </form>
 
-                <form action="{{ route('message.update', ['message' => $message->id]) }}" method="POST"
-                    class="pt-3" id="form-edit-message">
+                <form action="#" method="POST" class="pt-3" id="form-edit-message">
                     @csrf
                     @method('PUT')
                     <div class="message">
@@ -336,14 +392,16 @@
         #form-add-message,
         #form-edit-message,
         #form-add-image,
-        #form-add-video {
+        #form-add-video,
+        #form-check-modules {
             display: none;
         }
 
         #form-add-message.active,
         #form-edit-message.active,
         #form-add-image.active,
-        #form-add-video.active {
+        #form-add-video.active,
+        #form-check-modules.active {
             display: block;
         }
     </style>
@@ -353,6 +411,9 @@
         const modalTitle = document.querySelector('#modal-title');
         const modal = document.querySelector('.modal');
         const modalSubmit = document.querySelector('.modal-submit');
+
+        const checkModulesBtn = document.querySelector('#check-modules-btn');
+        const formCheckModules = document.querySelector('#form-check-modules');
 
         const messageBtn = document.querySelector('.add-message');
         const formAddMessage = document.querySelector('#form-add-message');
@@ -368,6 +429,12 @@
         const formAddVideo = document.querySelector('#form-add-video');
 
         let modalFor;
+
+        checkModulesBtn.addEventListener('click', () => {
+            modalTitle.textContent = "Habilitar / Deshabilitar Modulos"
+            formCheckModules.classList.toggle('active');
+            modal.classList.toggle('active');
+        })
 
         messageBtn.addEventListener('click', () => {
             modalTitle.textContent = "Agregar Aviso"
@@ -413,6 +480,7 @@
             formAddMessage.classList.remove('active');
             formEditMessage.classList.remove('active');
             formAddImage.classList.remove('active');
+            formCheckModules.classList.remove('active');
         }
     </script>
 </x-app-layout>
