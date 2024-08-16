@@ -18,6 +18,8 @@ class Modules extends Seeder
             'modulo1' => 0,
             'modulo2' => 0,
             'modulo3' => 0,
+            'modulo4' => 0,
+            'restrict' => ''
         ]);
     }
 }

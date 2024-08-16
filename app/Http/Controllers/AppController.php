@@ -6,11 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Message;
 use App\Models\Image;
 use App\Models\Video;
+use App\Models\Module;
 
 class AppController extends Controller
 {
     public function dashboard()
     {
-        return view('dashboard', ['messages' => Message::all(), 'images' => Image::all(), 'videos' => Video::all()]);
+        return view('dashboard', ['messages' => Message::all(), 'images' => Image::all(), 'videos' => Video::all(), 'modules' => Module::first()]);
     }
 }

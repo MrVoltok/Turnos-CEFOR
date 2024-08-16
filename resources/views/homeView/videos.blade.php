@@ -21,51 +21,56 @@
             </header>
             <div class="turns py-12">
                 <ul class="flex flex-col gap-4">
-                    <li class="module-pill">
-                        <div class="turn">
-                            <h2 class="text-black font-bold text-2xl">Turno</h2>
-                            <span id="turno_modulo1" class="text-black font-bold text-5xl">{{ $turns->modulo1 }}</span>
-                        </div>
-                        <div class="module">
-                            <h2 class="text-5xl text-slate-50">Módulo 1</h2>
-                        </div>
-                    </li>
-                    <li class="module-pill">
-                        <div class="turn">
-                            <h2 class="text-black font-bold text-2xl">Turno</h2>
-                            <span id="turno_modulo2" class="text-black font-bold text-5xl">{{ $turns->modulo2 }}</span>
-                        </div>
-                        <div class="module">
-                            <h2 class="text-5xl text-slate-50">Módulo 2</h2>
-                        </div>
-                    </li>
-                    <li class="module-pill">
-                        <div class="turn">
-                            <h2 class="text-black font-bold text-2xl">Turno</h2>
-                            <span id="turno_modulo3" class="text-black font-bold text-5xl">{{ $turns->modulo3 }}</span>
-                        </div>
-                        <div class="module">
-                            <h2 class="text-5xl text-slate-50">Módulo 3</h2>
-                        </div>
-                    </li>
-                    <li class="module-pill">
-                        <div class="turn">
-                            <h2 class="text-black font-bold text-2xl">Turno</h2>
-                            <span id="turno_modulo4" class="text-black font-bold text-5xl">{{ $turns->modulo4 }}</span>
-                        </div>
-                        <div class="module">
-                            <h2 class="text-5xl text-slate-50">Módulo 4</h2>
-                        </div>
-                    </li>
+                    @foreach (['modulo1' => $turns->modulo1, 'modulo2' => $turns->modulo2, 'modulo3' => $turns->modulo3, 'modulo4' => $turns->modulo4] as $moduloKey => $turnoValue)
+                        @if (!in_array($moduloKey, $disabledModules))
+                            <li class="module-pill">
+                                <div class="turn">
+                                    <h2 class="text-black font-bold text-2xl">Turno</h2>
+                                    <span id="turno_{{ $moduloKey }}"
+                                        class="text-black font-bold text-6xl">{{ $turnoValue }}</span>
+                                </div>
+                                <div class="module">
+                                    <h2 class="text-4xl text-slate-50">
+                                        {{ ucfirst(str_replace('modulo', 'Módulo ', $moduloKey)) }}</h2>
+                                </div>
+                            </li>
+                        @endif
+                    @endforeach
                 </ul>
             </div>
         </aside>
         <main class="relative flex justify-center items-center bg-gray-100">
             <div class="wrapper">
-                <video src="{{ asset('video/video.mp4') }}" controls></video>
+                @foreach ($videos as $index => $video)
+                    <video id="video{{ $index }}" @if ($index != 0) style="display:none;" @endif>
+                        <source src="{{ Storage::url($video->name) }}" type="video/mp4">
+                    </video>
+                @endforeach
             </div>
             <footer class="absolute bottom-0 left-0 bg-[#17202f] p-2 w-full">
-                <p class="text-slate-50 font-semibold text-xl">Text</p>
+                <div class="slider">
+                    <div class="slide-track">
+                        @foreach ($messages as $message)
+                            <div class="slide">
+                                <span class="text-slate-50">
+                                    <img src="{{ asset('img/LobosBUAP.png') }}" alt="" width="25px">
+                                    {{ $message->message }}
+                                    <img src="{{ asset('img/LobosBUAP.png') }}" alt="" width="25px">
+
+                                </span>
+                            </div>
+                        @endforeach
+                        @foreach ($messages as $message)
+                            <div class="slide">
+                                <span class="text-slate-50">
+                                    <img src="{{ asset('img/LobosBUAP.png') }}" alt="" width="25px">
+                                    {{ $message->message }}
+                                    <img src="{{ asset('img/LobosBUAP.png') }}" alt="" width="25px">
+                                </span>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             </footer>
         </main>
     </div>
@@ -147,6 +152,53 @@
             box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
 
         }
+
+        .marquee-w {
+            position: relative;
+            display: block;
+            width: 100%;
+            height: 30px;
+            /* top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); */
+            overflow: hidden;
+            background: #000;
+        }
+
+        .slider {
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+        }
+
+        .slider .slide-track {
+            display: flex;
+            animation: scroll 100s linear infinite;
+            -webkit-animation: scroll 100s linear infinite;
+            width: calc(100% * 14);
+        }
+
+        .slider .slide {
+            margin-inline: 1rem;
+        }
+
+        .slide span {
+            gap: 1rem;
+            display: flex;
+            align-items: center
+        }
+
+        @keyframes scroll {
+            0% {
+                -webkit-transform: translateX(0);
+                transform: translateX(0);
+            }
+
+            100% {
+                -webkit-transform: translateX(-50%);
+                transform: translateX(-50%);
+            }
+        }
     </style>
     <script>
         const turnModule1 = document.getElementById("turno_modulo1");
@@ -220,6 +272,23 @@
         }
         // Fetch turnos every 5 seconds
         setInterval(fetchTurnos, 5000);
+
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const videos = document.querySelectorAll('video');
+            let currentIndex = 0;
+
+            videos[currentIndex].play();
+
+            videos.forEach((video, index) => {
+                video.addEventListener('ended', () => {
+                    video.style.display = 'none';
+                    currentIndex = (currentIndex + 1) % videos.length;
+                    videos[currentIndex].style.display = 'block';
+                    videos[currentIndex].play();
+                });
+            });
+        });
     </script>
     {{-- @livewirphpeScripts --}}
 </body>
