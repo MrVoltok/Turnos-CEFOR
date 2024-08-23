@@ -41,11 +41,19 @@
         </aside>
         <main class="relative flex justify-center items-center bg-gray-100">
             <div class="wrapper">
-                @foreach ($videos as $index => $video)
+                {{-- @foreach ($videos as $index => $video)
                     <video id="video{{ $index }}" @if ($index != 0) style="display:none;" @endif>
                         <source src="{{ Storage::url($video->name) }}" type="video/mp4">
                     </video>
-                @endforeach
+                @endforeach --}}
+
+                <div class="iframe-container rounded overflow-hidden">
+                    <iframe width="560" height="315"
+                        src="https://www.youtube.com/embed/jfKfPfyJRdk?si=VlFwZjpWJKSuUrok" title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
             </div>
             <footer class="absolute bottom-0 left-0 bg-[#17202f] p-2 w-full">
                 <div class="slider">
@@ -135,7 +143,7 @@
         }
 
         .wrapper {
-            width: 80%;
+            width: 90%;
 
             --b: 5px;
             --c: #f3f4f6 25%, #131f34 0;
@@ -151,18 +159,6 @@
         .wrapper video {
             box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
 
-        }
-
-        .marquee-w {
-            position: relative;
-            display: block;
-            width: 100%;
-            height: 30px;
-            /* top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%); */
-            overflow: hidden;
-            background: #000;
         }
 
         .slider {
@@ -186,6 +182,21 @@
             gap: 1rem;
             display: flex;
             align-items: center
+        }
+
+        .iframe-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
 
         @keyframes scroll {

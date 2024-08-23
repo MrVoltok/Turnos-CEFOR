@@ -52,6 +52,7 @@ Route::post('/dashboard/imagen/nuevo', [MediaController::class, 'storeImage'])->
 Route::delete('/dashboard/imagen/{image}', [MediaController::class, 'deleteImage'])->name('image.delete');
 Route::post('/dashboard/video/nuevo', [MediaController::class, 'storeVideo'])->name('video.add');
 Route::delete('/dashboard/video/{video}', [MediaController::class, 'deleteVideo'])->name('video.delete');
+Route::post('/dashboard/transmision/nuevo', [MediaController::class, 'storeIframe'])->name('iframe.add');
 
 Route::get('/test', function () {
     return view('test', ['videos' => Video::all()]);

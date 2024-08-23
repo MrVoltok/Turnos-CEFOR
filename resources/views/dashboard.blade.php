@@ -217,19 +217,21 @@
                     <header class="flex justify-between">
                         <h3 class="font-bold text-3xl">Transmisiones</h3>
                         <div class="buttons">
-                            <button type="button"
+                            <button type="button" id="add-iframe"
+                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Agregar</button>
+                            <button type="button" id="update-iframe"
                                 class="focus:outline-none text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:ring-yellow-900">Cambiar</button>
                         </div>
                     </header>
                     <article class="pt-3">
-                        <div class="iframe-container rounded overflow-hidden">
-                            {{-- <iframe width="100%" height="315"
-                                src="https://www.youtube.com/embed/jfKfPfyJRdk?si=dlOqDRb1y2qE7Vgd"
-                                title="YouTube video player" frameborder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> --}}
+                        <div class="iframe-container rounded overflow-hidden relative">
+                            @if ($transmition)
+                                {!! $transmition->embedUrl !!}
+                            @else
+                                <span class="text-gray-100 font-bold text-xl">No hay transmisiones registradas en el
+                                    sistema</span>
+                            @endif
                         </div>
-
                     </article>
                 </div>
             </div>
@@ -332,6 +334,7 @@
                 </form>
 
                 {{-- MEDIA FORMS --}}
+                {{-- ADD IMAGE FORM --}}
                 <form action="{{ route('image.add') }}" method="POST" class="pt-3" id="form-add-image"
                     enctype="multipart/form-data">
                     @csrf
@@ -348,6 +351,7 @@
                     </div>
                 </form>
 
+                {{-- ADD VIDEO FORM --}}
                 <form action="{{ route('video.add') }}" method="POST" class="pt-3" id="form-add-video"
                     enctype="multipart/form-data">
                     @csrf
@@ -361,6 +365,41 @@
                         <button type="submit"
                             class="modal-submit mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Subir
                             Video</button>
+                    </div>
+                </form>
+
+                {{-- ADD IFRAME FORM --}}
+                <form action="{{ route('iframe.add') }}" method="POST" class="pt-3" id="form-add-iframe">
+                    @csrf
+                    <div class="iframe">
+                        <label for="iframe" class="block mb-2 text-sm font-medium text-white-100">Transmisión en
+                            vivo</label>
+                        <input type="text" id="iframe-input" name="iframe"
+                            class="block w-full p-2.5 text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Ingrese el url de la transmisión" required />
+                    </div>
+                    <div class="button flex justify-center">
+                        <button type="submit"
+                            class="modal-submit mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Subir
+                            transmisión</button>
+                    </div>
+                </form>
+
+                {{-- UPDATE IFRAME --}}
+                <form action="#" method="POST" class="pt-3" id="form-update-iframe">
+                    @csrf
+                    <div class="iframe">
+                        <label for="iframe" class="block mb-2 text-sm font-medium text-white-100">Transmisión en
+                            vivo - Actualizar</label>
+                        <p class="id-url"></p>
+                        <input type="text" id="iframe-input" name="iframe"
+                            class="block w-full p-2.5 text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Ingrese el url de la transmisión" required />
+                    </div>
+                    <div class="button flex justify-center">
+                        <button type="submit"
+                            class="modal-submit mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Actualizar
+                            transmisión</button>
                     </div>
                 </form>
             </div>
@@ -393,7 +432,9 @@
         #form-edit-message,
         #form-add-image,
         #form-add-video,
-        #form-check-modules {
+        #form-check-modules,
+        #form-add-iframe,
+        #form-update-iframe {
             display: none;
         }
 
@@ -401,8 +442,25 @@
         #form-edit-message.active,
         #form-add-image.active,
         #form-add-video.active,
-        #form-check-modules.active {
+        #form-check-modules.active,
+        #form-add-iframe.active,
+        #form-update-iframe.active {
             display: block;
+        }
+
+        .iframe-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
     </style>
 
@@ -427,6 +485,11 @@
 
         const addVideoBtn = document.querySelector('#add-video');
         const formAddVideo = document.querySelector('#form-add-video');
+
+        const addIframeBtn = document.querySelector('#add-iframe');
+        const updateIframeBtn = document.querySelector('#update-iframe');
+        const formAddIframe = document.querySelector('#form-add-iframe');
+        const formUpdateIframe = document.querySelector('#form-update-iframe');
 
         let modalFor;
 
@@ -471,6 +534,18 @@
             modal.classList.toggle('active');
         })
 
+        addIframeBtn.addEventListener('click', () => {
+            modalTitle.textContent = "Agregar Transmisión"
+            formAddIframe.classList.toggle('active');
+            modal.classList.toggle('active');
+        });
+
+        updateIframeBtn.addEventListener('click', () => {
+            modalTitle.textContent = "Actualizar Transmisión"
+            formUpdateIframe.classList.toggle('active');
+            modal.classList.toggle('active');
+        });
+
         closeModal.addEventListener('click', () => {
             modal.classList.remove('active');
             closeForms();
@@ -481,6 +556,8 @@
             formEditMessage.classList.remove('active');
             formAddImage.classList.remove('active');
             formCheckModules.classList.remove('active');
+            formAddIframe.classList.remove('active');
+            formUpdateIframe.classList.remove('active');
         }
     </script>
 </x-app-layout>

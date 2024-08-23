@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Image;
 use App\Models\Video;
+use App\Models\Transmition;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class MediaController extends Controller
@@ -43,6 +45,19 @@ class MediaController extends Controller
         return redirect()->back();
     }
 
+    public function storeIframe(Request $request)
+    {
+        // dd($request->all());
+        $embed = $request->iframe;
+        // dd($embed);
+        DB::table('transmitions')->insert([
+            'embedUrl' => $embed,
+            'name' => $request->name
+        ]);
+
+        return redirect()->back();
+    }
+
     public function deleteImage($id)
     {
 
@@ -73,5 +88,12 @@ class MediaController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function updateIframe($iframe)
+    {
+        $transmition = Transmition::findOrFail($iframe);
+
+        dd($transmition);
     }
 }
