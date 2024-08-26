@@ -47,6 +47,8 @@ Route::post('/dashboard/avisos/nuevo', [MessageController::class, 'store'])->nam
 Route::put('/dashboard/avisos/nuevo/{message}', [MessageController::class, 'update'])->name('message.update');
 Route::delete('/dashboard/avisos/nuevo/{message}', [MessageController::class, 'delete'])->name('message.delete');
 
+Route::put('/dashboard/screen', [ScreenController::class, 'selectView'])->name('selectView');
+
 // ROUTES FOR MEDIA
 Route::post('/dashboard/imagen/nuevo', [MediaController::class, 'storeImage'])->name('image.add');
 Route::delete('/dashboard/imagen/{image}', [MediaController::class, 'deleteImage'])->name('image.delete');

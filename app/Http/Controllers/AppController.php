@@ -8,11 +8,12 @@ use App\Models\Image;
 use App\Models\Video;
 use App\Models\Module;
 use App\Models\Transmition;
+use App\Models\Screen;
 
 class AppController extends Controller
 {
     public function dashboard()
     {
-        return view('dashboard', ['messages' => Message::all(), 'images' => Image::all(), 'videos' => Video::all(), 'modules' => Module::first(), 'transmition' => Transmition::first()]);
+        return view('dashboard', ['messages' => Message::all(), 'images' => Image::all(), 'videos' => Video::all(), 'modules' => Module::first(), 'transmition' => Transmition::first(), 'screenView' => Screen::first()]);
     }
 }

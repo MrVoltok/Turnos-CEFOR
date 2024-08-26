@@ -105,39 +105,80 @@
                     <header class="flex justify-between">
                         <h3 class="font-bold text-3xl">Diseño</h3>
                         <div class="buttons">
-                            <button type="button"
+                            <button type="button" id="select-screen"
                                 class="focus:outline-none text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:ring-yellow-900">Cambiar</button>
                         </div>
                     </header>
                     <article class="pt-3">
                         <ul class="flex justify-between gap-3">
-                            <li class="flex flex-col items-center gap-2 shadow-xl p-2 bg-gray-900 rounded">
-                                <div class="screen-layout w-full h-full rounded overflow-hidden shadow-xl">
-                                    <picture>
-                                        <img src="{{ asset('img/layouts/imagenes.png') }}" alt="Imágenes"
-                                            class="w-full h-full">
-                                    </picture>
-                                </div>
-                                <span class="text-xl font-bold">Imágenes</span>
-                            </li>
-                            <li class="flex flex-col items-center gap-2 shadow-xl p-2 rounded">
-                                <div class="screen-layout w-full h-full rounded overflow-hidden shadow-xl">
-                                    <picture>
-                                        <img src="{{ asset('img/layouts/videos.png') }}" alt="Imágenes"
-                                            class="w-full h-full">
-                                    </picture>
-                                </div>
-                                <span class="text-xl font-bold">Videos</span>
-                            </li>
-                            <li class="flex flex-col items-center gap-2 shadow-xl p-2 rounded">
-                                <div class="screen-layout w-full h-full rounded overflow-hidden shadow-xl">
-                                    <picture>
-                                        <img src="{{ asset('img/layouts/transmisiones.png') }}" alt="Imágenes"
-                                            class="w-full h-full">
-                                    </picture>
-                                </div>
-                                <span class="text-xl font-bold">Transmisiones</span>
-                            </li>
+                            @if ($screenView->screenView == 'img')
+                                <li class="flex flex-col items-center gap-2 shadow-xl p-2 bg-gray-900 rounded">
+                                    <div class="screen-layout w-full h-full rounded overflow-hidden shadow-xl">
+                                        <picture>
+                                            <img src="{{ asset('img/layouts/imagenes.png') }}" alt="Imágenes"
+                                                class="w-full h-full">
+                                        </picture>
+                                    </div>
+                                    <span class="text-xl font-bold">Imágenes</span>
+                                </li>
+                            @else
+                                <li class="flex flex-col items-center gap-2 shadow-xl p-2 rounded">
+                                    <div class="screen-layout w-full h-full rounded overflow-hidden shadow-xl">
+                                        <picture>
+                                            <img src="{{ asset('img/layouts/imagenes.png') }}" alt="Imágenes"
+                                                class="w-full h-full">
+                                        </picture>
+                                    </div>
+                                    <span class="text-xl font-bold">Imágenes</span>
+                                </li>
+                            @endif
+
+                            @if ($screenView->screenView == 'video')
+                                <li class="flex flex-col items-center gap-2 shadow-xl p-2 bg-gray-900 rounded">
+                                    <div class="screen-layout w-full h-full rounded overflow-hidden shadow-xl">
+                                        <picture>
+                                            <img src="{{ asset('img/layouts/videos.png') }}" alt="Imágenes"
+                                                class="w-full h-full">
+                                        </picture>
+                                    </div>
+                                    <span class="text-xl font-bold">Videos</span>
+                                </li>
+                            @else
+                                <li class="flex flex-col items-center gap-2 shadow-xl p-2 rounded">
+                                    <div class="screen-layout w-full h-full rounded overflow-hidden shadow-xl">
+                                        <picture>
+                                            <img src="{{ asset('img/layouts/videos.png') }}" alt="Imágenes"
+                                                class="w-full h-full">
+                                        </picture>
+                                    </div>
+                                    <span class="text-xl font-bold">Videos</span>
+                                </li>
+                            @endif
+
+                            @if ($screenView->screenView == 'stream')
+                                <li class="flex flex-col items-center gap-2 shadow-xl p-2 bg-gray-900 rounded">
+                                    <div class="screen-layout w-full h-full rounded overflow-hidden shadow-xl">
+                                        <picture>
+                                            <img src="{{ asset('img/layouts/transmisiones.png') }}" alt="Imágenes"
+                                                class="w-full h-full">
+                                        </picture>
+                                    </div>
+                                    <span class="text-xl font-bold">Transmisiones</span>
+                                </li>
+                            @else
+                                <li class="flex flex-col items-center gap-2 shadow-xl p-2 rounded">
+                                    <div class="screen-layout w-full h-full rounded overflow-hidden shadow-xl">
+                                        <picture>
+                                            <img src="{{ asset('img/layouts/transmisiones.png') }}" alt="Imágenes"
+                                                class="w-full h-full">
+                                        </picture>
+                                    </div>
+                                    <span class="text-xl font-bold">Transmisiones</span>
+                                </li>
+                            @endif
+
+
+
                         </ul>
                     </article>
                 </div>
@@ -333,6 +374,26 @@
                     </div>
                 </form>
 
+                {{-- SCREEN OPTION --}}
+                <form action="{{ route('selectView') }}" method="POST" class="pt-3" id="form-select-screen">
+                    @csrf
+                    @method('PUT')
+                    <label for="screen" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Diseño
+                        de turnos</label>
+                    <select id="countries" name="screen"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected id="no-select">Seleccione una opción</option>
+                        <option value="img">Imágenes</option>
+                        <option value="video">Videos</option>
+                        <option value="stream">Transmisiones</option>
+                    </select>
+                    <div class="button flex justify-center">
+                        <button type="submit"
+                            class="modal-submit mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Aplicar
+                            Cambios</button>
+                    </div>
+                </form>
+
                 {{-- MEDIA FORMS --}}
                 {{-- ADD IMAGE FORM --}}
                 <form action="{{ route('image.add') }}" method="POST" class="pt-3" id="form-add-image"
@@ -434,7 +495,8 @@
         #form-add-video,
         #form-check-modules,
         #form-add-iframe,
-        #form-update-iframe {
+        #form-update-iframe,
+        #form-select-screen {
             display: none;
         }
 
@@ -444,7 +506,8 @@
         #form-add-video.active,
         #form-check-modules.active,
         #form-add-iframe.active,
-        #form-update-iframe.active {
+        #form-update-iframe.active,
+        #form-select-screen.active {
             display: block;
         }
 
@@ -490,6 +553,9 @@
         const updateIframeBtn = document.querySelector('#update-iframe');
         const formAddIframe = document.querySelector('#form-add-iframe');
         const formUpdateIframe = document.querySelector('#form-update-iframe');
+
+        const selectScreenBtn = document.querySelector('#select-screen');
+        const formSelectScreen = document.querySelector('#form-select-screen');
 
         let modalFor;
 
@@ -546,6 +612,12 @@
             modal.classList.toggle('active');
         });
 
+        selectScreenBtn.addEventListener('click', () => {
+            modalTitle.textContent = "Elegir vista de turnos"
+            formSelectScreen.classList.toggle('active');
+            modal.classList.toggle('active');
+        })
+
         closeModal.addEventListener('click', () => {
             modal.classList.remove('active');
             closeForms();
@@ -558,6 +630,7 @@
             formCheckModules.classList.remove('active');
             formAddIframe.classList.remove('active');
             formUpdateIframe.classList.remove('active');
+            formSelectScreen.classList.remove('active');
         }
     </script>
 </x-app-layout>

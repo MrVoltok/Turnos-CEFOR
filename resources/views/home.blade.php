@@ -59,16 +59,11 @@
 
             <div id="slider">
                 @forelse ($images as $image)
-                    <img src="{{ Storage::url($image->name) }}" id="img{{ $loop->iteration }}">
+                    <img class="w-[500px] h-[500px]" src="{{ Storage::url($image->name) }}"
+                        id="img{{ $loop->iteration }}">
                 @empty
-                    <img src="{{ asset('img/LobosBUAP.png') }}" id="img1">
+                    <img class="w-[500px] h-[500px]" src="{{ asset('img/LobosBUAP.png') }}" id="img1">
                 @endforelse
-                {{-- <img src="{{ asset('img/LobosBUAP.png') }}" id="img1">
-                <img src="{{ asset('img/curso1.jpeg') }}" id="img2" class="hidden">
-                <img src="{{ asset('img/curso2.jpeg') }}" id="img3" class="hidden">
-                <img src="{{ asset('img/curso3.jpeg') }}" id="img4" class="hidden">
-                <img src="{{ asset('img/curso4.jpeg') }}" id="img5" class="hidden">
-                <img src="{{ asset('img/campamento.jpg') }}" id="img6" class="hidden"> --}}
             </div>
         </div>
     </div>

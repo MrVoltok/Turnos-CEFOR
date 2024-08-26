@@ -41,19 +41,30 @@
         </aside>
         <main class="relative flex justify-center items-center bg-gray-100">
             <div class="wrapper">
-                {{-- @foreach ($videos as $index => $video)
-                    <video id="video{{ $index }}" @if ($index != 0) style="display:none;" @endif>
-                        <source src="{{ Storage::url($video->name) }}" type="video/mp4">
-                    </video>
-                @endforeach --}}
+                @if ($screen->screenView == 'video')
+                    @forelse ($videos as $index => $video)
+                        <video id="video{{ $index }}"
+                            @if ($index != 0) style="display:none;" @endif>
+                            <source src="{{ Storage::url($video->name) }}" type="video/mp4">
+                        </video>
+                    @empty
+                    @endforelse
+                @endif
+                @if ($screen->screenView == 'stream')
+                    <div class="iframe-container overflow-hidden">
+                        {!! $stream->embedUrl !!}
+                    </div>
+                @endif
 
-                <div class="iframe-container rounded overflow-hidden">
+
+
+                {{-- <div class="iframe-container rounded overflow-hidden">
                     <iframe width="560" height="315"
                         src="https://www.youtube.com/embed/jfKfPfyJRdk?si=VlFwZjpWJKSuUrok" title="YouTube video player"
                         frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                </div>
+                </div> --}}
             </div>
             <footer class="absolute bottom-0 left-0 bg-[#17202f] p-2 w-full">
                 <div class="slider">
