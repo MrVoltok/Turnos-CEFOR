@@ -5,7 +5,7 @@ function iniciarSlider() {
     images[current].classList.toggle('hidden');
     current = (current + 1) % images.length;
     images[current].classList.remove('hidden');
-  }, 3000);
+  }, 20000);
 }
 
 // function refreshWindow() {

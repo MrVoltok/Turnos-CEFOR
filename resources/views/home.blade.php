@@ -59,14 +59,21 @@
 
             <div id="slider">
                 @forelse ($images as $image)
-                    <img class="w-[500px] h-[500px]" src="{{ Storage::url($image->name) }}"
+                    <img class="w-[500px] h-[500px] img-view" src="{{ Storage::url($image->name) }}"
                         id="img{{ $loop->iteration }}">
                 @empty
-                    <img class="w-[500px] h-[500px]" src="{{ asset('img/LobosBUAP.png') }}" id="img1">
+                    <img class="w-[500px] h-[500px] img-view" src="{{ asset('img/LobosBUAP.png') }}" id="img1">
                 @endforelse
             </div>
         </div>
     </div>
+
+    <style>
+        .img-view{
+            object-fit: cover
+        }
+    </style>
+
     <script src="{{ asset('js/gestion.js') }}"></script>
     <script>
         const turnModule1 = document.getElementById("turno_modulo1");
