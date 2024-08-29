@@ -81,27 +81,6 @@ h1 {
   user-select: none;
 }
 
-#slider {
-  width: 500px;
-  height: 500px;
-  overflow: hidden;
-  position: relative;
-  border-radius: 16px;
-  overflow: hidden;
-  background: #eaeaea;
-}
-
-#slider img {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  opacity: 1;
-  transition: 0.5s ease-in-out;
-}
-
-.hidden {
-  opacity: 0;
-}
 
 .turno {
   padding: 24px;

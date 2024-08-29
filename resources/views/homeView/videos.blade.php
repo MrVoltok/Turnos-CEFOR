@@ -8,6 +8,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 
 </head>
 
@@ -40,44 +41,40 @@
             </div>
         </aside>
         <main class="relative flex justify-center items-center bg-gray-100">
-            <div class="wrapper">
-                @if ($screen->screenView == 'img')
-                    <div id="slider">
-                        @forelse ($images as $image)
-                            <img class="w-[500px] h-[500px]" src="{{ Storage::url($image->name) }}"
-                                id="img{{ $loop->iteration }}">
+            @if ($screen->screenView == 'img')
+                <div class="img-bg">
+                    <div class="wrapper-slider">
+                        <div id="slider">
+                            @forelse ($images as $image)
+                                <img class="w-[500px] h-[500px]" src="{{ Storage::url($image->name) }}"
+                                    id="img{{ $loop->iteration }}">
+                            @empty
+                                <img class="w-[500px] h-[500px]" src="{{ asset('img/LobosBUAP.png') }}" id="img1">
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
+            @else
+                <div class="wrapper">
+                    @if ($screen->screenView == 'video')
+                        @forelse ($videos as $index => $video)
+                            <video id="video{{ $index }}"
+                                @if ($index != 0) style="display:none;" @endif>
+                                <source src="{{ Storage::url($video->name) }}" type="video/mp4">
+                            </video>
                         @empty
-                            <img class="w-[500px] h-[500px]" src="{{ asset('img/LobosBUAP.png') }}" id="img1">
                         @endforelse
-                    </div>
-                @endif
-                @if ($screen->screenView == 'video')
-                    @forelse ($videos as $index => $video)
-                        <video id="video{{ $index }}"
-                            @if ($index != 0) style="display:none;" @endif>
-                            <source src="{{ Storage::url($video->name) }}" type="video/mp4">
-                        </video>
-                    @empty
-                    @endforelse
-                @endif
-                @if ($screen->screenView == 'stream')
-                    <div class="iframe-container overflow-hidden">
-                        {!! $stream->embedUrl !!}
-                    </div>
-                @endif
+                    @endif
+                    @if ($screen->screenView == 'stream')
+                        <div class="iframe-container overflow-hidden">
+                            {!! $stream->embedUrl !!}
+                        </div>
+                    @endif
+                </div>
+            @endif
 
-
-
-                {{-- <div class="iframe-container rounded overflow-hidden">
-                    <iframe width="560" height="315"
-                        src="https://www.youtube.com/embed/jfKfPfyJRdk?si=VlFwZjpWJKSuUrok" title="YouTube video player"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                </div> --}}
-            </div>
             <footer class="absolute bottom-0 left-0 bg-[#17202f] p-2 w-full">
-                <div class="slider">
+                <div class="slider-message">
                     <div class="slide-track">
                         @foreach ($messages as $message)
                             <div class="slide">
@@ -161,11 +158,18 @@
 
         main {
             width: 70%;
+            background-color: #fafafa;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23bebebe' fill-opacity='0.19' fill-rule='evenodd'/%3E%3C/svg%3E");
         }
 
-        .wrapper {
-            width: 90%;
+        .img-bg {
+            background: #f3f4f6;
+            position: relative;
+            top: -1rem;
+        }
 
+        .wrapper,
+        .wrapper-slider {
             --b: 5px;
             --c: #f3f4f6 25%, #131f34 0;
             padding: 1rem;
@@ -177,29 +181,61 @@
             background-repeat: no-repeat;
         }
 
+        .wrapper {
+            width: 90%;
+        }
+
         .wrapper video {
             box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
 
         }
 
-        .slider {
+        .wrapper-slider {
+
+            width: auto;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+        }
+
+        #slider {
+            width: 600px;
+            height: 600px;
+            overflow: hidden;
+            position: relative;
+            background: transparent;
+        }
+
+        #slider img {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            opacity: 1;
+            transition: 0.5s ease-in-out;
+            object-fit: cover;
+        }
+
+        .hidden {
+            opacity: 0;
+        }
+
+
+        .slider-message {
             width: 100%;
             height: auto;
             overflow: hidden;
         }
 
-        .slider .slide-track {
+        .slider-message .slide-track {
             display: flex;
             animation: scroll 100s linear infinite;
             -webkit-animation: scroll 100s linear infinite;
             width: calc(100% * 14);
         }
 
-        .slider .slide {
+        .slider-message .slide {
             margin-inline: 1rem;
         }
 
-        .slide span {
+        .slider-message span {
             gap: 1rem;
             display: flex;
             align-items: center
@@ -232,6 +268,8 @@
             }
         }
     </style>
+    <script src="{{ asset('js/gestion.js') }}"></script>
+
     <script>
         const turnModule1 = document.getElementById("turno_modulo1");
         const turnModule2 = document.getElementById("turno_modulo2");
