@@ -41,6 +41,16 @@
         </aside>
         <main class="relative flex justify-center items-center bg-gray-100">
             <div class="wrapper">
+                @if ($screen->screenView == 'img')
+                    <div id="slider">
+                        @forelse ($images as $image)
+                            <img class="w-[500px] h-[500px]" src="{{ Storage::url($image->name) }}"
+                                id="img{{ $loop->iteration }}">
+                        @empty
+                            <img class="w-[500px] h-[500px]" src="{{ asset('img/LobosBUAP.png') }}" id="img1">
+                        @endforelse
+                    </div>
+                @endif
                 @if ($screen->screenView == 'video')
                     @forelse ($videos as $index => $video)
                         <video id="video{{ $index }}"

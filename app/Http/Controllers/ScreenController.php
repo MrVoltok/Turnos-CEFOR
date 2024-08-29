@@ -23,10 +23,6 @@ class ScreenController extends Controller
 
         $screenOpt = Screen::first();
 
-        if ($screenOpt->screenView == 'img') {
-            return view('home', ['images' => Image::all(), 'turns' => $turns, 'disabledModules' => $disabledModules]);
-        }
-
         return view('homeView.videos', ['images' => Image::all(), 'turns' => $turns, 'disabledModules' => $disabledModules, 'videos' => Video::all(), 'messages' => Message::all(), 'screen' => Screen::first(), 'stream' => Transmition::first()]);
     }
 
