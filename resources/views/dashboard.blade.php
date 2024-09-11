@@ -103,7 +103,7 @@
             <div class="w-[60%] text-gray-100 flex flex-col gap-4">
                 <div class="bg-gray-800 p-6 shadow-sm sm:rounded-lg">
                     <header class="flex justify-between">
-                        <h3 class="font-bold text-3xl">Diseño</h3>
+                        <h3 class="font-bold text-3xl">Presentación de pantalla de turnos</h3>
                         <div class="buttons">
                             <button type="button" id="select-screen"
                                 class="focus:outline-none text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:ring-yellow-900">Cambiar</button>
@@ -576,7 +576,7 @@
             element.addEventListener('click', () => {
                 const messageId = element.getAttribute('data-id');
                 const messageText = element.getAttribute('data-message');
-                let url = `http://localhost:8000/dashboard/avisos/nuevo/${messageId}`
+                let url = `http://172.18.195.41:8000/dashboard/avisos/nuevo/${messageId}`
                 formEditMessage.action = url;
 
                 modalTitle.textContent = "Editar Aviso"
