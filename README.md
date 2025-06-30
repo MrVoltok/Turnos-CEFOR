@@ -40,8 +40,6 @@ Teniendo el software requerido, el siguiente paso es abrir una terminal que perm
 
     ```bash
     git clone https://github.com/MrVoltok/Turnos-CEFOR.git
-
-    cd DocsCONDDE/
     ```
 
 ## Instalar dependencias de Laravel
@@ -83,6 +81,14 @@ Antes de ejecutar el programa por primera vez, es necasrio migrar las tablas cre
 
 ```bash
 php artisan migrate
+```
+
+### Seeders
+
+El programa cuenta con seeders, que generan datos en las tablas de la base de datos que son vitales para el funcionamiento del programa. Para obtener los datos se debe escribir en la terminal lo siguiente:
+
+```bash
+ php artisan db:seed --class=Modules
 ```
 
 ## Medios multimedia
